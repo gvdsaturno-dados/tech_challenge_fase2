@@ -1,16 +1,15 @@
-# Extrai as 7 tabelas da fonte e grava a camada Bronze em Parquet.
+# Extrai as 7 tabelas da fonte e grava a camada Bronze em Parquet na Azure.
 # Politica: cada execucao gera um arquivo novo com nome unico, entao
 # nenhuma execucao apaga a anterior (historico preservado).
-# As metricas de cada tabela sao acumuladas em data/ops/extracao.csv.
+# As metricas de cada tabela vao para ops/execucoes.csv.
 
-import os
 import time
 from datetime import datetime
 
-import pandas as pd
 from google.cloud import bigquery
 
 from config import GCP_PROJECT_ID, DATASET_FONTE, STORAGE_OPTIONS
+from utils_pipeline import registrar_execucao
 
 TABELAS = [
     "alunos",
@@ -21,7 +20,6 @@ TABELAS = [
     "meta_alfabetizacao_municipio",
     "dicionario",
 ]
-ARQUIVO_METRICAS = "data/ops/extracao.csv"
 
 client = bigquery.Client(project=GCP_PROJECT_ID)
 config_dry_run = bigquery.QueryJobConfig(dry_run=True, use_query_cache=False)
@@ -29,7 +27,6 @@ config_dry_run = bigquery.QueryJobConfig(dry_run=True, use_query_cache=False)
 agora = datetime.now()
 dt_ingestao = agora.strftime("%Y-%m-%d")
 id_execucao = agora.strftime("%Y%m%d_%H%M%S")
-os.makedirs("data/ops", exist_ok=True)
 print(f"Execucao {id_execucao}\n")
 
 for tabela in TABELAS:
@@ -39,6 +36,7 @@ for tabela in TABELAS:
     dry_run = client.query(consulta, job_config=config_dry_run)
     job = client.query(consulta)
     df = job.to_dataframe(create_bqstorage_client=False)
+    linhas_fonte = len(df)
 
     df["dt_ingestao"] = dt_ingestao
     df["id_execucao"] = id_execucao
@@ -47,17 +45,10 @@ for tabela in TABELAS:
     df.to_parquet(caminho, index=False, storage_options=STORAGE_OPTIONS)
 
     duracao = round(time.time() - inicio, 1)
-    metrica = pd.DataFrame([{
-        "id_execucao": id_execucao,
-        "tabela": tabela,
-        "status": "sucesso",
-        "linhas": len(df),
-        "bytes_processados": dry_run.total_bytes_processed,
-        "id_job_bigquery": job.job_id,
-        "duracao_segundos": duracao,
-    }])
-    metrica.to_csv(ARQUIVO_METRICAS, mode="a", index=False, header=not os.path.exists(ARQUIVO_METRICAS))
+    registrar_execucao("bronze", tabela, linhas_fonte, len(df), duracao, "sucesso",
+                       bytes_processados=dry_run.total_bytes_processed,
+                       detalhe=f"id_execucao={id_execucao} job_bigquery={job.job_id}")
 
     print(f"{tabela:<32} {len(df):>10} linhas  {duracao:>7} s")
 
-print(f"\nBronze gravada no container bronze da Azure e metricas em {ARQUIVO_METRICAS}")
+print("\nBronze gravada no container bronze e metricas em ops/execucoes.csv")

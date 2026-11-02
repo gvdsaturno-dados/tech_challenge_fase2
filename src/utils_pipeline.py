@@ -37,6 +37,18 @@ def registrar_execucao(etapa, tabela, linhas_entrada, linhas_saida, duracao, sta
     })
 
 
+def classificar(linha):
+    """Situacao em relacao a meta. Quem nao tem meta nao pode ser
+    classificado como "nao atingiu", por isso existe o estado "sem meta"."""
+    if pd.isna(linha["taxa_alfabetizacao"]):
+        return "sem resultado"
+    if pd.isna(linha["meta_do_ano"]):
+        return "sem meta"
+    if linha["taxa_alfabetizacao"] >= linha["meta_do_ano"]:
+        return "atingiu"
+    return "nao atingiu"
+
+
 def checar_regra(nome, tipo, passou, detalhe=""):
     """Registra a regra em ops/qualidade.csv.
 

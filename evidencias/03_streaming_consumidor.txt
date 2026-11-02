@@ -1,0 +1,16 @@
+Ouvindo o Event Hubs por 90 segundos...
+
+[informativa] streaming: lote sem eventos invalidos: OK (0 para a quarentena)
+[informativa] streaming: lote sem eventos duplicados: FALHOU (1 descartados)
+lote 20261102_223425_237081: 7 recebidos, 6 novos na Gold, 0 invalidos, 1 duplicados, latencia media 2.28 s
+[informativa] streaming: lote sem eventos invalidos: OK (0 para a quarentena)
+[informativa] streaming: lote sem eventos duplicados: FALHOU (1 descartados)
+lote 20261102_223429_939372: 10 recebidos, 9 novos na Gold, 0 invalidos, 1 duplicados, latencia media 2.31 s
+[informativa] streaming: lote sem eventos invalidos: OK (0 para a quarentena)
+[informativa] streaming: lote sem eventos duplicados: FALHOU (1 descartados)
+lote 20261102_223434_603417: 10 recebidos, 9 novos na Gold, 0 invalidos, 1 duplicados, latencia media 2.24 s
+[informativa] streaming: lote sem eventos invalidos: FALHOU (4 para a quarentena)
+[informativa] streaming: lote sem eventos duplicados: OK (0 descartados)
+lote 20261102_223439_292736: 10 recebidos, 6 novos na Gold, 4 invalidos, 0 duplicados, latencia media 2.20 s
+
+Consumidor encerrado

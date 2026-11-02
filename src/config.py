@@ -12,6 +12,10 @@ GCP_PROJECT_ID = os.getenv("GCP_PROJECT_ID")
 AZURE_STORAGE_ACCOUNT = os.getenv("AZURE_STORAGE_ACCOUNT")
 AZURE_STORAGE_KEY = os.getenv("AZURE_STORAGE_KEY")
 
+# Event Hubs: a mensageria do streaming (equivalente ao Kafka na Azure)
+EVENTHUB_CONNECTION_STRING = os.getenv("EVENTHUB_CONNECTION_STRING")
+EVENTHUB_NAME = os.getenv("EVENTHUB_NAME")
+
 # o pandas usa isso para ler e gravar caminhos "abfs://container/arquivo"
 STORAGE_OPTIONS = {"account_name": AZURE_STORAGE_ACCOUNT, "account_key": AZURE_STORAGE_KEY}
 

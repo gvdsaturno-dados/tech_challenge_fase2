@@ -15,7 +15,7 @@ import time
 import pandas as pd
 
 from config import STORAGE_OPTIONS
-from utils_pipeline import checar_regra, registrar_execucao
+from utils_pipeline import checar_regra, classificar, registrar_execucao
 
 inicio = time.time()
 
@@ -33,17 +33,6 @@ meta_municipio = ler_silver("meta_municipio")
 print("Silver lida\n")
 
 
-def classificar(linha):
-    # tres estados: quem nao tem meta nao pode ser classificado como "nao atingiu"
-    if pd.isna(linha["taxa_alfabetizacao"]):
-        return "sem resultado"
-    if pd.isna(linha["meta_do_ano"]):
-        return "sem meta"
-    if linha["taxa_alfabetizacao"] >= linha["meta_do_ano"]:
-        return "atingiu"
-    return "nao atingiu"
-
-
 def metas_da_edicao(meta, chaves):
     """Meta do proprio ano e meta de 2030, ambas da edicao do ano avaliado."""
     do_ano = meta[meta["ano_meta"] == meta["ano"]][chaves + ["meta"]].rename(columns={"meta": "meta_do_ano"})
@@ -59,6 +48,9 @@ indicador_municipio = municipio[chaves_mun + ["sigla_uf", "rede_nome", "taxa_alf
     metas_da_edicao(meta_municipio, chaves_mun), on=chaves_mun, how="left")
 indicador_municipio["situacao_meta"] = indicador_municipio.apply(classificar, axis=1)
 indicador_municipio["distancia_meta_2030"] = indicador_municipio["meta_2030"] - indicador_municipio["taxa_alfabetizacao"]
+# o streaming acrescenta linhas "simulado" nesta tabela; a coluna separa os dois
+indicador_municipio["origem"] = "oficial"
+indicador_municipio["id_evento"] = None
 
 # ---------------------------------------------------------------------------
 # 2. Indicador por UF e Brasil (a taxa vem da tabela de meta, que inclui 2025)

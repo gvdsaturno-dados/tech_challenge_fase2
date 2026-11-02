@@ -10,7 +10,7 @@ from datetime import datetime
 import pandas as pd
 from google.cloud import bigquery
 
-from config import GCP_PROJECT_ID, DATASET_FONTE
+from config import GCP_PROJECT_ID, DATASET_FONTE, STORAGE_OPTIONS
 
 TABELAS = [
     "alunos",
@@ -43,9 +43,8 @@ for tabela in TABELAS:
     df["dt_ingestao"] = dt_ingestao
     df["id_execucao"] = id_execucao
 
-    pasta = f"data/bronze/{tabela}/dt_ingestao={dt_ingestao}"
-    os.makedirs(pasta, exist_ok=True)
-    df.to_parquet(f"{pasta}/{id_execucao}.parquet", index=False)
+    caminho = f"abfs://bronze/{tabela}/dt_ingestao={dt_ingestao}/{id_execucao}.parquet"
+    df.to_parquet(caminho, index=False, storage_options=STORAGE_OPTIONS)
 
     duracao = round(time.time() - inicio, 1)
     metrica = pd.DataFrame([{
@@ -61,4 +60,4 @@ for tabela in TABELAS:
 
     print(f"{tabela:<32} {len(df):>10} linhas  {duracao:>7} s")
 
-print(f"\nBronze gravada em data/bronze/ e metricas em {ARQUIVO_METRICAS}")
+print(f"\nBronze gravada no container bronze da Azure e metricas em {ARQUIVO_METRICAS}")

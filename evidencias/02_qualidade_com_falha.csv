@@ -1,0 +1,42 @@
+data_hora,regra,tipo,passou,detalhe
+2026-11-02 19:09:42,alunos: chaves sem nulo,bloqueante,True,0 nulos
+2026-11-02 19:09:43,municipio: chaves sem nulo,bloqueante,True,0 nulos
+2026-11-02 19:09:43,uf: chaves sem nulo,bloqueante,True,0 nulos
+2026-11-02 19:09:43,municipio: sem duplicidade de chave,bloqueante,True,0 duplicados
+2026-11-02 19:09:43,uf: sem duplicidade de chave,bloqueante,True,0 duplicados
+2026-11-02 19:09:45,alunos: sem aluno repetido no mesmo ano,bloqueante,True,0 duplicados
+2026-11-02 19:09:45,alunos: codigos todos no dicionario,bloqueante,True,0 desconhecidos
+2026-11-02 19:09:46,municipio: codigos todos no dicionario,bloqueante,True,0 desconhecidos
+2026-11-02 19:09:46,uf: codigos todos no dicionario,bloqueante,True,0 desconhecidos
+2026-11-02 19:09:46,meta_brasil: rede traduzida para codigo,bloqueante,True,0 desconhecidos
+2026-11-02 19:09:46,meta_uf: rede traduzida para codigo,bloqueante,True,0 desconhecidos
+2026-11-02 19:09:46,meta_municipio: rede traduzida para codigo,bloqueante,True,0 desconhecidos
+2026-11-02 19:09:46,id_municipio com codigo de UF valido,bloqueante,True,0 sem UF
+2026-11-02 19:09:47,alunos -> municipio: municipios encontrados >= 99%,bloqueante,True,99.98% de 5548 municipios
+2026-11-02 19:09:47,join meta_municipio x municipio >= 95%,bloqueante,True,99.53% de 10704 linhas
+2026-11-02 19:09:47,join meta_uf x uf >= 85%,bloqueante,True,90.74% de 54 linhas
+2026-11-02 19:09:47,"taxa da meta municipal = taxa do resultado (dif. media < 0,1)",informativa,True,diferenca media 0.0173
+2026-11-02 19:09:48,uf 2023: 27 UFs na rede publica,informativa,False,3 UFs ausentes
+2026-11-02 19:09:48,uf 2024: 27 UFs na rede publica,informativa,False,2 UFs ausentes
+2026-11-02 19:09:48,meta_municipio: nivel_alfabetizacao preenchido,informativa,False,120 nulos
+2026-11-02 19:09:48,alunos: sem rede privada (fora do indicador),informativa,False,25 alunos da rede privada
+2026-11-02 19:09:50,alunos presentes com proficiencia preenchida,informativa,False,0.04% dos presentes sem nota
+2026-11-02 19:16:08,base_fase3: sem colunas derivadas do alvo,bloqueante,True,colunas: []
+2026-11-02 19:16:08,indicador_municipio: situacao_meta so com estados previstos,bloqueante,True,"['atingiu', 'nao atingiu', 'sem meta']"
+2026-11-02 19:16:08,indicador_uf_brasil: situacao_meta so com estados previstos,bloqueante,True,"['atingiu', 'nao atingiu', 'sem meta', 'sem resultado']"
+2026-11-02 19:16:08,base_fase3: uma linha por municipio x ano x rede,bloqueante,True,0 duplicados
+2026-11-02 19:16:09,validacao cruzada Brasil: microdado x oficial ate 1 pp,informativa,False,maior diferenca 1.56 pp
+2026-11-02 19:16:09,validacao cruzada UF: diferenca media ate 1 pp,informativa,True,"media 0.03 pp, maxima 1.49 pp"
+2026-11-02 19:16:09,join municipio x perfil dos alunos >= 95%,bloqueante,True,96.60% casaram
+2026-11-02 19:24:38,alunos: chaves sem nulo,bloqueante,True,0 nulos
+2026-11-02 19:24:39,municipio: chaves sem nulo,bloqueante,True,0 nulos
+2026-11-02 19:24:39,uf: chaves sem nulo,bloqueante,True,0 nulos
+2026-11-02 19:24:39,municipio: sem duplicidade de chave,bloqueante,True,0 duplicados
+2026-11-02 19:24:39,uf: sem duplicidade de chave,bloqueante,True,0 duplicados
+2026-11-02 19:24:41,alunos: sem aluno repetido no mesmo ano,bloqueante,True,0 duplicados
+2026-11-02 19:24:41,alunos: codigos todos no dicionario,bloqueante,True,0 desconhecidos
+2026-11-02 19:24:42,municipio: codigos todos no dicionario,bloqueante,True,0 desconhecidos
+2026-11-02 19:24:42,uf: codigos todos no dicionario,bloqueante,True,0 desconhecidos
+2026-11-02 19:24:42,meta_brasil: rede traduzida para codigo,bloqueante,True,0 desconhecidos
+2026-11-02 19:24:42,meta_uf: rede traduzida para codigo,bloqueante,True,0 desconhecidos
+2026-11-02 19:24:42,meta_municipio: rede traduzida para codigo,bloqueante,False,10704 desconhecidos

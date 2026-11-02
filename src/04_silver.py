@@ -4,6 +4,7 @@
 # nada da Silver e publicado. A Silver e sobrescrita a cada execucao porque
 # pode ser recriada a partir da Bronze, que guarda o historico.
 
+import os
 import time
 
 import pandas as pd
@@ -28,6 +29,12 @@ meta_municipio = ler_bronze("meta_alfabetizacao_municipio")
 dicionario = ler_bronze("dicionario")
 linhas_entrada = {"alunos": len(alunos), "municipio": len(municipio), "uf": len(uf)}
 print("Bronze lida\n")
+
+# teste de falha: com SIMULAR_FALHA=1 a rede da meta municipal chega em
+# maiusculas, imitando a fonte mudando o formato de uma chave
+if os.getenv("SIMULAR_FALHA") == "1":
+    print("ATENCAO: simulando falha (rede da meta municipal em maiusculas)\n")
+    meta_municipio["rede"] = meta_municipio["rede"].str.upper()
 
 # ---------------------------------------------------------------------------
 # 1. Traduzir os codigos pelo dicionario

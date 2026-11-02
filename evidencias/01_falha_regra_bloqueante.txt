@@ -1,0 +1,23 @@
+Bronze lida
+
+ATENCAO: simulando falha (rede da meta municipal em maiusculas)
+
+Regras de qualidade:
+[bloqueante] alunos: chaves sem nulo: OK (0 nulos)
+[bloqueante] municipio: chaves sem nulo: OK (0 nulos)
+[bloqueante] uf: chaves sem nulo: OK (0 nulos)
+[bloqueante] municipio: sem duplicidade de chave: OK (0 duplicados)
+[bloqueante] uf: sem duplicidade de chave: OK (0 duplicados)
+[bloqueante] alunos: sem aluno repetido no mesmo ano: OK (0 duplicados)
+[bloqueante] alunos: codigos todos no dicionario: OK (0 desconhecidos)
+[bloqueante] municipio: codigos todos no dicionario: OK (0 desconhecidos)
+[bloqueante] uf: codigos todos no dicionario: OK (0 desconhecidos)
+[bloqueante] meta_brasil: rede traduzida para codigo: OK (0 desconhecidos)
+[bloqueante] meta_uf: rede traduzida para codigo: OK (0 desconhecidos)
+[bloqueante] meta_municipio: rede traduzida para codigo: FALHOU (10704 desconhecidos)
+Traceback (most recent call last):
+  File "C:\Users\gvds5\OneDrive\Documentos\FIAP\FASE 2\Tech Challenge\tech_challenge_fase2\src\04_silver.py", line 142, in <module>
+    checar_regra(f"{nome}: rede traduzida para codigo", "bloqueante", desconhecidos == 0, f"{desconhecidos} desconhecidos")
+  File "C:\Users\gvds5\OneDrive\Documentos\FIAP\FASE 2\Tech Challenge\tech_challenge_fase2\src\utils_pipeline.py", line 56, in checar_regra
+    raise Exception(f"Regra bloqueante falhou: {nome} ({detalhe})")
+Exception: Regra bloqueante falhou: meta_municipio: rede traduzida para codigo (10704 desconhecidos)

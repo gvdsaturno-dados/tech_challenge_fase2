@@ -1,0 +1,6 @@
+data_hora_utc,funcao,sucesso,duracao_s,id_execucao
+2026-11-02 23:02:54,pipeline_diaria,False,17.3,0adbe4d8072651f3f9bad2dd49c744ff
+2026-11-02 23:18:56,pipeline_diaria,False,2.1,bdb01ba930525645af6d96ed049bd783
+2026-11-02 23:21:41,pipeline_diaria,True,22.4,88cff775d4714e498c58fd1c16f34ed5
+2026-11-02 23:23:03,pipeline_diaria,False,10.7,cc807f5054659d321ab23a050d05d357
+2026-11-02 23:44:24,pipeline_diaria,True,22.9,75ecad3882e959aea64b32d9fefb69c7

@@ -2,11 +2,14 @@
 # e checar as regras de qualidade. Os dois registros ficam no container ops
 # da Azure e acumulam as execucoes, uma linha nova a cada chamada.
 
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 
 from config import STORAGE_OPTIONS
+
+# horario de Brasilia nos registros, tanto no computador quanto na Azure (que usa UTC)
+BRASILIA = timezone(timedelta(hours=-3))
 
 
 def acrescentar_linha(arquivo, linha):
@@ -25,7 +28,7 @@ def registrar_execucao(etapa, tabela, linhas_entrada, linhas_saida, duracao, sta
                        bytes_processados=None, detalhe=""):
     """Uma linha em ops/execucoes.csv para cada tabela processada."""
     acrescentar_linha("execucoes.csv", {
-        "data_hora": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "data_hora": datetime.now(BRASILIA).strftime("%Y-%m-%d %H:%M:%S"),
         "etapa": etapa,
         "tabela": tabela,
         "linhas_entrada": linhas_entrada,
@@ -56,7 +59,7 @@ def checar_regra(nome, tipo, passou, detalhe=""):
     o script para aqui, antes de gravar a proxima camada.
     """
     acrescentar_linha("qualidade.csv", {
-        "data_hora": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "data_hora": datetime.now(BRASILIA).strftime("%Y-%m-%d %H:%M:%S"),
         "regra": nome,
         "tipo": tipo,
         "passou": bool(passou),

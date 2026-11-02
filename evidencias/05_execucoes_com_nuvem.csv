@@ -1,0 +1,74 @@
+data_hora,etapa,tabela,linhas_entrada,linhas_saida,duracao_segundos,status,bytes_processados,detalhe
+2026-11-02 18:19:25,bronze,alunos,3867999.0,3867999.0,779.4,sucesso,268545240.0,id_execucao=20261102_181925 job_bigquery=7ce158cc-5322-4694-9a9e-df7eb46e8b00
+2026-11-02 18:19:25,bronze,municipio,23995.0,23995.0,8.0,sucesso,1832061.0,id_execucao=20261102_181925 job_bigquery=e0f59ac2-ec1c-458c-b8bb-fa86e29f1d14
+2026-11-02 18:19:25,bronze,uf,145.0,145.0,2.3,sucesso,10330.0,id_execucao=20261102_181925 job_bigquery=711f4c00-1d01-4608-bbee-bd8158e0f623
+2026-11-02 18:19:25,bronze,meta_alfabetizacao_brasil,3.0,3.0,2.2,sucesso,270.0,id_execucao=20261102_181925 job_bigquery=2f64172e-8f5c-4019-a768-df5d5b95096b
+2026-11-02 18:19:25,bronze,meta_alfabetizacao_uf,81.0,81.0,2.2,sucesso,7374.0,id_execucao=20261102_181925 job_bigquery=d89ab2d6-5326-4be1-ba24-973eb966df61
+2026-11-02 18:19:25,bronze,meta_alfabetizacao_municipio,10704.0,10704.0,3.9,sucesso,1151232.0,id_execucao=20261102_181925 job_bigquery=c2422445-0188-4594-b93a-6c8914f533f6
+2026-11-02 18:19:25,bronze,dicionario,27.0,27.0,2.0,sucesso,1174.0,id_execucao=20261102_181925 job_bigquery=7290c1ed-266d-4e34-a3fd-e2f9c0b3e9da
+2026-11-02 18:36:02,bronze,alunos,3867999.0,3867999.0,819.0,sucesso,268545240.0,id_execucao=20261102_183602 job_bigquery=318fc91d-36c7-4c14-8591-af1da9d773fd
+2026-11-02 18:36:02,bronze,municipio,23995.0,23995.0,7.1,sucesso,1832061.0,id_execucao=20261102_183602 job_bigquery=45f23b72-66c5-4c63-b039-32d22c4d8e82
+2026-11-02 18:36:02,bronze,uf,145.0,145.0,2.9,sucesso,10330.0,id_execucao=20261102_183602 job_bigquery=b1adbee8-9a9c-49d5-8b5a-be06bca8cdcd
+2026-11-02 18:36:02,bronze,meta_alfabetizacao_brasil,3.0,3.0,1.9,sucesso,270.0,id_execucao=20261102_183602 job_bigquery=fbde4ea3-032b-4865-81db-e4a33c6be0c5
+2026-11-02 18:36:02,bronze,meta_alfabetizacao_uf,81.0,81.0,1.9,sucesso,7374.0,id_execucao=20261102_183602 job_bigquery=eb85e812-40c5-4690-862e-f9663cf64294
+2026-11-02 18:36:02,bronze,meta_alfabetizacao_municipio,10704.0,10704.0,3.8,sucesso,1151232.0,id_execucao=20261102_183602 job_bigquery=f5fd8935-fc27-4937-8164-2be1af3ac442
+2026-11-02 18:36:02,bronze,dicionario,27.0,27.0,1.8,sucesso,1174.0,id_execucao=20261102_183602 job_bigquery=3319cb54-f9cd-4ea3-bb57-963ce40e3d15
+2026-11-02 19:10:04,silver,alunos,3867999.0,3867999.0,31.0,sucesso,,
+2026-11-02 19:10:04,silver,municipio,23995.0,23995.0,31.0,sucesso,,
+2026-11-02 19:10:04,silver,uf,145.0,145.0,31.0,sucesso,,
+2026-11-02 19:10:04,silver,meta_brasil,21.0,21.0,31.0,sucesso,,
+2026-11-02 19:10:05,silver,meta_uf,567.0,567.0,31.0,sucesso,,
+2026-11-02 19:10:05,silver,meta_municipio,74928.0,74928.0,31.0,sucesso,,
+2026-11-02 19:10:05,silver,municipio_meta,10704.0,10704.0,31.0,sucesso,,
+2026-11-02 19:10:06,silver,uf_meta,54.0,54.0,31.0,sucesso,,
+2026-11-02 19:16:09,gold,indicador_municipio,23995.0,23995.0,34.0,sucesso,,
+2026-11-02 19:16:09,gold,indicador_uf_brasil,84.0,84.0,34.0,sucesso,,
+2026-11-02 19:16:10,gold,evolucao_temporal,10550.0,10550.0,34.0,sucesso,,
+2026-11-02 19:16:10,gold,validacao_cruzada,145.0,145.0,34.0,sucesso,,
+2026-11-02 19:16:10,gold,base_fase3,23597.0,23597.0,34.0,sucesso,,
+2026-11-02 19:34:03,gold,indicador_municipio,23995.0,23995.0,42.4,sucesso,,
+2026-11-02 19:34:03,gold,indicador_uf_brasil,84.0,84.0,42.4,sucesso,,
+2026-11-02 19:34:03,gold,evolucao_temporal,10550.0,10550.0,42.4,sucesso,,
+2026-11-02 19:34:03,gold,validacao_cruzada,145.0,145.0,42.4,sucesso,,
+2026-11-02 19:34:04,gold,base_fase3,23597.0,23597.0,42.4,sucesso,,
+2026-11-02 19:34:27,streaming,eventos,7.0,6.0,2.3,sucesso,,invalidos=0 duplicados=1 latencia_media_s=2.28 latencia_max_s=4.86
+2026-11-02 19:34:31,streaming,eventos,10.0,9.0,1.3,sucesso,,invalidos=0 duplicados=1 latencia_media_s=2.31 latencia_max_s=4.40
+2026-11-02 19:34:35,streaming,eventos,10.0,9.0,1.3,sucesso,,invalidos=0 duplicados=1 latencia_media_s=2.24 latencia_max_s=4.36
+2026-11-02 19:34:40,streaming,eventos,10.0,6.0,1.6,sucesso,,invalidos=4 duplicados=0 latencia_media_s=2.20 latencia_max_s=4.39
+2026-11-02 22:58:17,streaming,eventos,37.0,0.0,1.6,sucesso,,invalidos=4 duplicados=33 latencia_media_s=1425.75 latencia_max_s=1435.96
+2026-11-02 23:03:07,silver,alunos,3867999.0,3867999.0,8.3,sucesso,,
+2026-11-02 23:03:07,silver,municipio,23995.0,23995.0,8.3,sucesso,,
+2026-11-02 23:03:07,silver,uf,145.0,145.0,8.3,sucesso,,
+2026-11-02 23:03:07,silver,meta_brasil,21.0,21.0,8.3,sucesso,,
+2026-11-02 23:03:07,silver,meta_uf,567.0,567.0,8.3,sucesso,,
+2026-11-02 23:03:07,silver,meta_municipio,74928.0,74928.0,8.3,sucesso,,
+2026-11-02 23:03:08,silver,municipio_meta,10704.0,10704.0,8.3,sucesso,,
+2026-11-02 23:03:08,silver,uf_meta,54.0,54.0,8.3,sucesso,,
+2026-11-02 20:18:57,04_silver,-,,,0.0,falha,,ModuleNotFoundError: No module named 'pandas'
+2026-11-02 20:21:54,silver,alunos,3867999.0,3867999.0,8.4,sucesso,,
+2026-11-02 20:21:54,silver,municipio,23995.0,23995.0,8.4,sucesso,,
+2026-11-02 20:21:55,silver,uf,145.0,145.0,8.4,sucesso,,
+2026-11-02 20:21:55,silver,meta_brasil,21.0,21.0,8.4,sucesso,,
+2026-11-02 20:21:55,silver,meta_uf,567.0,567.0,8.4,sucesso,,
+2026-11-02 20:21:55,silver,meta_municipio,74928.0,74928.0,8.4,sucesso,,
+2026-11-02 20:21:55,silver,municipio_meta,10704.0,10704.0,8.4,sucesso,,
+2026-11-02 20:21:55,silver,uf_meta,54.0,54.0,8.4,sucesso,,
+2026-11-02 20:22:02,gold,indicador_municipio,24025.0,24025.0,5.4,sucesso,,
+2026-11-02 20:22:02,gold,indicador_uf_brasil,84.0,84.0,5.4,sucesso,,
+2026-11-02 20:22:02,gold,evolucao_temporal,10550.0,10550.0,5.4,sucesso,,
+2026-11-02 20:22:03,gold,validacao_cruzada,145.0,145.0,5.4,sucesso,,
+2026-11-02 20:22:03,gold,base_fase3,23597.0,23597.0,5.4,sucesso,,
+2026-11-02 20:23:13,04_silver,-,,,8.3,falha,,Exception: Regra bloqueante falhou: meta_municipio: rede traduzida para codigo (10704 desconhecidos)
+2026-11-02 20:44:37,silver,alunos,3867999.0,3867999.0,8.7,sucesso,,
+2026-11-02 20:44:38,silver,municipio,23995.0,23995.0,8.7,sucesso,,
+2026-11-02 20:44:38,silver,uf,145.0,145.0,8.7,sucesso,,
+2026-11-02 20:44:38,silver,meta_brasil,21.0,21.0,8.7,sucesso,,
+2026-11-02 20:44:38,silver,meta_uf,567.0,567.0,8.7,sucesso,,
+2026-11-02 20:44:38,silver,meta_municipio,74928.0,74928.0,8.7,sucesso,,
+2026-11-02 20:44:38,silver,municipio_meta,10704.0,10704.0,8.7,sucesso,,
+2026-11-02 20:44:38,silver,uf_meta,54.0,54.0,8.7,sucesso,,
+2026-11-02 20:44:46,gold,indicador_municipio,24025.0,24025.0,5.8,sucesso,,
+2026-11-02 20:44:46,gold,indicador_uf_brasil,84.0,84.0,5.8,sucesso,,
+2026-11-02 20:44:46,gold,evolucao_temporal,10550.0,10550.0,5.8,sucesso,,
+2026-11-02 20:44:46,gold,validacao_cruzada,145.0,145.0,5.8,sucesso,,
+2026-11-02 20:44:46,gold,base_fase3,23597.0,23597.0,5.8,sucesso,,

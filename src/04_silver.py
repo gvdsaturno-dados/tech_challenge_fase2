@@ -1,7 +1,7 @@
 # Camada Silver: le a execucao mais recente da Bronze, padroniza, traduz os
 # codigos pelo dicionario, integra resultados com metas e checa as regras de
-# qualidade. Todas as regras rodam ANTES de gravar: se uma bloqueante falhar,
-# nada da Silver e publicado. A Silver e sobrescrita a cada execucao porque
+# qualidade. Todas as regras rodam antes de gravar, entao se uma bloqueante
+# falhar nada da Silver e publicado. A Silver e sobrescrita a cada execucao porque
 # pode ser recriada a partir da Bronze, que guarda o historico.
 
 import os
@@ -47,8 +47,15 @@ def traduzir(df, tabela, coluna):
     return df[coluna].map(mapa).fillna("desconhecido")
 
 
-for coluna in ["rede", "serie", "presenca", "preenchimento_caderno", "alfabetizado"]:
-    alunos[f"{coluna}_nome"] = traduzir(alunos, "alunos", coluna)
+alunos["rede_nome"] = traduzir(alunos, "alunos", "rede")
+alunos["serie_nome"] = traduzir(alunos, "alunos", "serie")
+
+# presenca, preenchimento e alfabetizado sao 0/1: aqui so e conferido se todos
+# os codigos existem no dicionario, sem guardar o texto (economiza memoria)
+desconhecidos_flags = 0
+for coluna in ["presenca", "preenchimento_caderno", "alfabetizado"]:
+    traducao = traduzir(alunos, "alunos", coluna)
+    desconhecidos_flags += ((traducao == "desconhecido") & alunos[coluna].notna()).sum()
 for coluna in ["rede", "serie"]:
     municipio[f"{coluna}_nome"] = traduzir(municipio, "municipio", coluna)
     uf[f"{coluna}_nome"] = traduzir(uf, "uf", coluna)
@@ -137,6 +144,8 @@ checar_regra("alunos: sem aluno repetido no mesmo ano", "bloqueante", duplicados
 for nome, df in [("alunos", alunos), ("municipio", municipio), ("uf", uf)]:
     desconhecidos = (df.filter(like="_nome") == "desconhecido").sum().sum()
     checar_regra(f"{nome}: codigos todos no dicionario", "bloqueante", desconhecidos == 0, f"{desconhecidos} desconhecidos")
+checar_regra("alunos: presenca, caderno e alfabetizado no dicionario", "bloqueante", desconhecidos_flags == 0,
+             f"{desconhecidos_flags} desconhecidos")
 for nome, df in [("meta_brasil", meta_brasil), ("meta_uf", meta_uf), ("meta_municipio", meta_municipio)]:
     desconhecidos = (df["rede"] == "desconhecido").sum()
     checar_regra(f"{nome}: rede traduzida para codigo", "bloqueante", desconhecidos == 0, f"{desconhecidos} desconhecidos")
@@ -148,10 +157,10 @@ checar_regra("id_municipio com codigo de UF valido", "bloqueante", sem_uf == 0, 
 # chave de relacionamento: municipios dos alunos existem na tabela municipio
 mun_alunos = pd.Series(alunos["id_municipio"].unique())
 taxa = mun_alunos.isin(municipio["id_municipio"]).mean() * 100
-checar_regra("alunos -> municipio: municipios encontrados >= 99%", "bloqueante", taxa >= 99,
+checar_regra("municipios dos alunos encontrados na tabela municipio >= 99%", "bloqueante", taxa >= 99,
              f"{taxa:.2f}% de {len(mun_alunos)} municipios")
 
-# taxa de correspondencia dos joins (obrigatoria no PDF)
+# taxa de correspondencia dos joins: join sem par nao da erro, so gera nulo
 taxa = municipio_meta["taxa_alfabetizacao_resultado"].notna().mean() * 100
 checar_regra("join meta_municipio x municipio >= 95%", "bloqueante", taxa >= 95,
              f"{taxa:.2f}% de {len(municipio_meta)} linhas")

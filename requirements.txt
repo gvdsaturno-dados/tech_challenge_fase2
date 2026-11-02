@@ -5,3 +5,4 @@ db-dtypes==1.9.0
 python-dotenv==1.2.4
 adlfs==2026.8.0
 azure-eventhub==5.15.1
+azure-functions==1.25.0

@@ -150,7 +150,7 @@ A Azure foi escolhida para o processamento porque é a nuvem disponível sem car
 | | Batch | Streaming |
 |---|---|---|
 | Frequência | 1 vez por semana (Silver e Gold) e quando a fonte é atualizada (extração) | A cada evento recebido |
-| Latência medida | Execução completa na nuvem: Silver em 8,4 s e Gold em 5,4 s; extração em cerca de 13 min | Do produtor até a gravação: **~2,2 s em média** (evidencias/03) |
+| Latência medida | Execução completa na nuvem: Silver em 8,4 s e Gold em 5,4 s; extração em cerca de 13 min | Do produtor até a gravação: **~2,3 s em média** (evidencias/03) |
 | Garantia de entrega | Leitura completa da fonte a cada execução | Event Hubs entrega **pelo menos uma vez**: pode repetir mensagens. O consumidor é **idempotente**: descarta duplicados pelo `id_evento` |
 | Processamento | Tabela inteira | Micro-lotes de até 10 eventos |
 
@@ -214,7 +214,7 @@ Para demonstrar a falha existe a configuração `SIMULAR_FALHA=1`. Com ela, a Si
 
 - **Métricas persistidas:** cada etapa grava em `ops/execucoes.csv` data e hora, etapa, tabela, linhas de entrada e de saída, duração, status, bytes processados e detalhe (ID do job do BigQuery, latência do streaming). O arquivo acumula execuções.
 - **Falhas de ingestão e de processamento:** a extração (`python src/rodar_pipeline.py extracao`) e as etapas Silver e Gold passam pelo `rodar_pipeline.py`, que grava a linha com status `falha` e a mensagem de erro e depois propaga o erro. No streaming, a falha de um lote marca a execução da Function como falha e dispara o alerta.
-- **Latência:** no streaming, o produtor grava `momento_evento` e o consumidor grava `momento_ingestao`, cada um com o próprio relógio. A diferença média medida foi de 2,2 s.
+- **Latência:** no streaming, o produtor grava `momento_evento` e o consumidor grava `momento_ingestao`, cada um com o próprio relógio. A diferença média medida foi de 2,3 s.
 - **Alerta:** a regra `alerta-falha-pipeline` do Azure Monitor verifica a cada 5 minutos se alguma execução das Functions falhou (`requests | where success == false`) e manda e-mail pelo grupo de ações `ag-tc-fase2-email`.
 
 **Em produção, quem descobre que o pipeline quebrou, e em quanto tempo?** O responsável cadastrado no grupo de ações recebe um e-mail **em até cerca de 10 minutos** após a falha (5 minutos de janela da regra, mais o envio). Além do e-mail, a falha fica registrada em `ops/execucoes.csv` com a mensagem do erro. Durante o projeto ocorreram na Azure uma falha real (falta de memória, seção 7) e uma falha simulada, e o e-mail de alerta foi recebido.

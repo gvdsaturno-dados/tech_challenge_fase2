@@ -7,12 +7,12 @@ Medicoes:
 
                                  servico           unidade  quantidade_mes  preco_unitario_usd  custo_mensal_usd  custo_com_cota_gratis_usd
              BigQuery (leitura da fonte)          TiB lido        0.000247            6.250000          0.001544                   0.000000
-   ADLS Gen2 (Bronze, Silver, Gold, ops)            GB/mes        0.204709            0.033000          0.006755                   0.006755
-Azure Functions Flex (batch + streaming)        GB-segundo    9,088.000000            0.000037          0.336256                   0.000000
+   ADLS Gen2 (Bronze, Silver, Gold, ops)            GB/mes        0.204712            0.033000          0.006756                   0.006756
+Azure Functions Flex (batch + streaming)        GB-segundo    6,758.400000            0.000037          0.250061                   0.000000
        Event Hubs Basic (unidade ligada)              hora      730.000000            0.015000         10.950000                  10.950000
     Event Hubs Basic (eventos recebidos) milhao de eventos        0.010000            0.028000          0.000280                   0.000280
 
-Total sem cotas gratuitas: US$ 11.29 por mes
+Total sem cotas gratuitas: US$ 11.21 por mes
 Total com cotas gratuitas: US$ 10.96 por mes
 Maior custo: Event Hubs Basic (unidade ligada) (100% do total)
-Custo por execucao diaria da pipeline (sem cota): US$ 0.00332
+Custo por execucao da pipeline (sem cota): US$ 0.00332

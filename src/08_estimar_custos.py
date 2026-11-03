@@ -11,13 +11,13 @@ from config import AZURE_STORAGE_ACCOUNT, AZURE_STORAGE_KEY, STORAGE_OPTIONS
 
 # quantas vezes cada parte roda por mes em producao
 EXTRACOES_POR_MES = 1          # a fonte e atualizada poucas vezes por ano
-PIPELINES_POR_MES = 30         # Silver e Gold todo dia as 06h
+PIPELINES_POR_MES = 4          # Silver e Gold uma vez por semana
 EVENTOS_POR_MES = 10_000       # volume imaginado para o streaming
 EVENTOS_POR_LOTE = 10          # media de eventos por lote no teste
 HORAS_NO_MES = 730
 
 # duracoes medidas no Application Insights (02/11/2026)
-SEGUNDOS_PIPELINE = 22.4       # maior duracao de uma execucao da pipeline_diaria
+SEGUNDOS_PIPELINE = 22.4       # maior duracao de uma execucao da pipeline (Silver e Gold)
 SEGUNDOS_LOTE_STREAMING = 1.6  # duracao de um lote na consumidor_eventos
 MEMORIA_GB = 4                 # memoria da instancia da Function
 
@@ -73,4 +73,4 @@ print(f"Total com cotas gratuitas: US$ {tabela['custo_com_cota_gratis_usd'].sum(
 
 maior = tabela.loc[tabela["custo_com_cota_gratis_usd"].idxmax()]
 print(f"Maior custo: {maior['servico']} ({maior['custo_com_cota_gratis_usd'] / tabela['custo_com_cota_gratis_usd'].sum():.0%} do total)")
-print(f"Custo por execucao diaria da pipeline (sem cota): US$ {MEMORIA_GB * SEGUNDOS_PIPELINE * PRECO_FUNCTIONS_GB_S:.5f}")
+print(f"Custo por execucao da pipeline (sem cota): US$ {MEMORIA_GB * SEGUNDOS_PIPELINE * PRECO_FUNCTIONS_GB_S:.5f}")

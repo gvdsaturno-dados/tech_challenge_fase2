@@ -52,7 +52,7 @@ flowchart LR
             O[("ops/<br/>execucoes.csv<br/>qualidade.csv")]
         end
         subgraph FUNC["Azure Functions: func-tc-fase2-alfab"]
-            F1["pipeline_diaria<br/>(timer 06h)<br/>rodar_pipeline.py"]
+            F1["pipeline_semanal<br/>(toda segunda, 06h)<br/>rodar_pipeline.py"]
             F2["consumidor_eventos<br/>(gatilho do Event Hubs)<br/>consumidor.py"]
         end
         AI["Application Insights"]
@@ -78,7 +78,7 @@ flowchart LR
 1. **Extração (Bronze):** `src/03_extrair_bronze.py` mede o custo de cada leitura com dry run, lê as 7 tabelas do BigQuery e grava em Parquet em `bronze/<tabela>/dt_ingestao=AAAA-MM-DD/<id_execucao>.parquet`.
 2. **Silver:** `src/04_silver.py` lê a execução mais recente da Bronze, traduz os códigos pela tabela `dicionario`, converte a rede das metas para código, desempilha as metas por ano, integra resultado com meta e roda todas as regras de qualidade **antes** de gravar.
 3. **Gold:** `src/05_gold.py` gera os indicadores, a comparação com a meta, a evolução temporal, a validação cruzada com o microdado e a base para a Fase 3.
-4. **Orquestração:** a Function `pipeline_diaria` roda todo dia às 06h (horário de Brasília) e chama `src/rodar_pipeline.py`, que executa Silver e Gold em sequência, cada uma em um processo separado. Se uma etapa falha, a falha é registrada e as etapas seguintes não rodam.
+4. **Orquestração:** a Function `pipeline_semanal` roda toda segunda-feira às 06h (horário de Brasília) e chama `src/rodar_pipeline.py`, que executa Silver e Gold em sequência, cada uma em um processo separado. Se uma etapa falha, a falha é registrada e as etapas seguintes não rodam.
 
 ### Fluxo streaming
 
@@ -149,12 +149,12 @@ A Azure foi escolhida para o processamento porque é a nuvem disponível sem car
 
 | | Batch | Streaming |
 |---|---|---|
-| Frequência | 1 vez por dia (Silver e Gold) e quando a fonte é atualizada (extração) | A cada evento recebido |
+| Frequência | 1 vez por semana (Silver e Gold) e quando a fonte é atualizada (extração) | A cada evento recebido |
 | Latência medida | Execução completa na nuvem: Silver em 8,4 s e Gold em 5,4 s; extração em cerca de 13 min | Do produtor até a gravação: **~2,2 s em média** (evidencias/03) |
 | Garantia de entrega | Leitura completa da fonte a cada execução | Event Hubs entrega **pelo menos uma vez**: pode repetir mensagens. O consumidor é **idempotente**: descarta duplicados pelo `id_evento` |
 | Processamento | Tabela inteira | Micro-lotes de até 10 eventos |
 
-O indicador oficial muda uma vez por ano, então o batch é o caminho principal. O streaming serve para atualizações pontuais, que ficam separadas do dado oficial pela coluna `origem`.
+O indicador oficial muda poucas vezes por ano, então o batch é o caminho principal. Por isso Silver e Gold rodam uma vez por semana, e não todo dia: uma atualização da fonte chega à Gold em até 7 dias, sem reprocessar o mesmo dado sem necessidade. O agendamento fica ativo até 02/02/2027, data definida na configuração `DATA_FIM_AGENDAMENTO` da Function. Depois disso a Function continua existindo, mas não processa mais nada. O streaming serve para atualizações pontuais, que ficam separadas do dado oficial pela coluna `origem`.
 
 ### Data Lake × Data Warehouse
 
@@ -229,18 +229,18 @@ Para demonstrar a falha existe a configuração `SIMULAR_FALHA=1`. Com ela, a Si
 - Tags `projeto` e `ambiente` em todos os recursos.
 - Desligamento de recurso ocioso: o Event Hubs foi apagado ao fim dos testes (ver abaixo).
 
-**Estimativa de custo.** As quantidades são medidas e os preços vêm da API pública da Azure (Brazil South) e do preço público do BigQuery. O cálculo está em `src/08_estimar_custos.py`, e a saída em `evidencias/09_estimativa_custos.txt`. O ambiente usado é gratuito (BigQuery sandbox e crédito Azure for Students), então a tabela **projeta o mesmo desenho pago**, com esta cadência: Silver e Gold diárias, 1 extração por mês e 10 mil eventos por mês (premissa).
+**Estimativa de custo.** As quantidades são medidas e os preços vêm da API pública da Azure (Brazil South) e do preço público do BigQuery. O cálculo está em `src/08_estimar_custos.py`, e a saída em `evidencias/09_estimativa_custos.txt`. O ambiente usado é gratuito (BigQuery sandbox e crédito Azure for Students), então a tabela **projeta o mesmo desenho pago**, com esta frequência: Silver e Gold uma vez por semana, 1 extração por mês e 10 mil eventos por mês (volume imaginado para o streaming).
 
 | Serviço | Unidade | Quantidade medida | Preço unitário (US$) | Custo mensal projetado (US$) |
 |---|---|---|---|---|
 | BigQuery (leitura da fonte) | TiB lido | 0,000247 (259 MB por extração) | 6,25 | 0,00 (dentro de 1 TiB grátis) |
 | ADLS Gen2 Hot LRS | GB/mês | 0,20 (Bronze 136,8 MB, Silver 72,1 MB, Gold 0,7 MB) | 0,033 | 0,01 |
-| Azure Functions Flex | GB-segundo | 9.088 (22,4 s por execução diária e 1,6 s por lote, com 4 GB) | 0,000037 | 0,00 (dentro de 100 mil GB-s grátis) |
+| Azure Functions Flex | GB-segundo | 6.758 (22,4 s por execução semanal e 1,6 s por lote, com 4 GB) | 0,000037 | 0,00 (dentro de 100 mil GB-s grátis) |
 | Event Hubs Basic (unidade ligada) | hora | 730 | 0,015 | 10,95 |
 | Event Hubs Basic (eventos) | milhão de eventos | 0,01 | 0,028 | 0,00 |
 | **Total** | | | | **≈ 10,96** |
 
-Quase todo o custo vem do Event Hubs ligado 24 horas por dia. O processamento da pipeline custa **US$ 0,003 por execução diária**. Para o volume de 10 mil eventos por mês, a recomendação é trocar o Event Hubs por uma fila do próprio Storage (cobrada por operação) ou mantê-lo ligado só durante a janela de atualização. Por isso o namespace do Event Hubs foi **apagado** depois dos testes, e a Function de streaming foi desligada (`AzureWebJobs.consumidor_eventos.Disabled=true`). Os comandos para recriar estão em "Como reproduzir".
+Quase todo o custo vem do Event Hubs ligado 24 horas por dia. O processamento da pipeline custa **US$ 0,003 por execução**. Para o volume de 10 mil eventos por mês, a recomendação é trocar o Event Hubs por uma fila do próprio Storage (cobrada por operação) ou mantê-lo ligado só durante a janela de atualização. Por isso o namespace do Event Hubs foi **apagado** depois dos testes, e a Function de streaming foi desligada (`AzureWebJobs.consumidor_eventos.Disabled=true`). Os comandos para recriar estão em "Como reproduzir".
 
 ---
 
@@ -353,7 +353,7 @@ az eventhubs namespace authorization-rule keys list -g rg-tc-fase2 --namespace-n
 
 # Function App (cria o Application Insights junto)
 az functionapp create -g rg-tc-fase2 -n func-tc-fase2-alfab --storage-account sttcfase2alfab --flexconsumption-location brazilsouth --runtime python --runtime-version 3.12 --instance-memory 4096
-az functionapp config appsettings set -g rg-tc-fase2 -n func-tc-fase2-alfab --settings AZURE_STORAGE_ACCOUNT=... AZURE_STORAGE_KEY=... EVENTHUB_CONNECTION_STRING=... EVENTHUB_NAME=eventos-indicador
+az functionapp config appsettings set -g rg-tc-fase2 -n func-tc-fase2-alfab --settings AZURE_STORAGE_ACCOUNT=... AZURE_STORAGE_KEY=... EVENTHUB_CONNECTION_STRING=... EVENTHUB_NAME=eventos-indicador DATA_FIM_AGENDAMENTO=2027-02-02
 
 # alerta de falha por e-mail
 az monitor action-group create -g rg-tc-fase2 -n ag-tc-fase2-email --short-name alertatc --action email responsavel SEU_EMAIL
@@ -385,7 +385,7 @@ Para demonstrar a falha, acrescente `SIMULAR_FALHA=1` ao `.env` e rode `python s
 func azure functionapp publish func-tc-fase2-alfab --python
 ```
 
-Isso publica as Functions `pipeline_diaria` (todo dia às 06h de Brasília) e `consumidor_eventos` (acionada pelo Event Hubs). Para religar o streaming depois de recriar o Event Hubs, remova a configuração `AzureWebJobs.consumidor_eventos.Disabled`.
+Isso publica as Functions `pipeline_semanal` (toda segunda-feira às 06h de Brasília) e `consumidor_eventos` (acionada pelo Event Hubs). Para religar o streaming depois de recriar o Event Hubs, remova a configuração `AzureWebJobs.consumidor_eventos.Disabled`.
 
 ---
 

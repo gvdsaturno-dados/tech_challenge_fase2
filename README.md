@@ -2,7 +2,7 @@
 
 Pipeline de dados na Azure que junta as seis tabelas do dataset `br_inep_avaliacao_alfabetizacao`, da Base dos Dados, em três camadas: Bronze, Silver e Gold. Os dados chegam por carga batch e por streaming. A pipeline tem regras de qualidade, registro de cada execução, alerta de falha por e-mail e uma estimativa de custo feita com números medidos.
 
-**Vídeo executivo:** _(link a inserir)_
+**Vídeo executivo:** https://drive.google.com/file/d/1thHnbfWsUe95X8obMJ9G3p0T_lZwALDY/view?usp=sharing
 
 ---
 
